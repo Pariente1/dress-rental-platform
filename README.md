@@ -40,6 +40,7 @@ One of the core engineering challenges solved in this project is the availabilit
 SELECT * FROM bookings
 WHERE dress_id = target_dress
 AND (start_date <= requested_end AND end_date >= requested_start)
+```
 
 Security
 RLS Policies: Database policies ensure that public users can strictly read available inventory, while only authenticated admins can modify data.
