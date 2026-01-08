@@ -1,30 +1,42 @@
-# Dress rental website
+# 👗 Dress Rental Platform (SaaS MVP)
 
-*Automatically synced with your [v0.app](https://v0.app) deployments*
+**Developed by:** [Pascal Solutions TI](https://www.pascalsolutionsti.com)
+**Status:** Production (v1.0-LTS)
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/christian-mendivils-projects/v0-dress-rental-website)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/byYR0mTNoDw)
+## 📖 Overview
+A comprehensive web-based platform designed to digitize the operations of luxury dress rental businesses. This solution transforms a traditional brick-and-mortar inventory into a 24/7 digital branch with automated booking logic.
 
-## Overview
+Unlike standard e-commerce sites, this platform handles the complexity of **temporal inventory** (date-based availability), preventing double-booking conflicts automatically.
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+## 🚀 Key Features
 
-## Deployment
+### 👤 For Customers (Public View)
+* **Dynamic Filtering:** Real-time SQL filtering by Size, Color, Price, and Tags.
+* **Smart Availability:** Interactive calendar blocking dates based on existing reservations.
+* **Responsive Design:** Mobile-first UX built with Tailwind CSS and Shadcn/UI.
 
-Your project is live at:
+### 🛡️ For Administrators (Business Logic)
+* **Inline CMS:** Edit prices, descriptions, and statuses directly on the UI (No-code experience).
+* **Inventory Management:** Full CRUD operations for dresses with image optimization.
+* **Booking Conflict Engine:** Backend logic that calculates date overlaps to prevent errors.
+* **Secure Access:** Role-based access control (RBAC) via Supabase Auth.
 
-**[https://vercel.com/christian-mendivils-projects/v0-dress-rental-website](https://vercel.com/christian-mendivils-projects/v0-dress-rental-website)**
+## 🛠️ Tech Stack
 
-## Build your app
+* **Frontend:** Next.js 14 (App Router), React, TypeScript.
+* **Styling:** Tailwind CSS, Shadcn/UI (Radix Primitives).
+* **Backend:** Serverless Functions (Next.js API Routes).
+* **Database:** Supabase (PostgreSQL) + Row Level Security (RLS).
+* **Storage:** Supabase Storage (Image Buckets).
+* **Infrastructure:** Vercel Edge Network / Docker (Ready for AWS migration).
 
-Continue building your app on:
+## 🧩 Architecture Highlights
 
-**[https://v0.app/chat/byYR0mTNoDw](https://v0.app/chat/byYR0mTNoDw)**
+### The "Date-Blocking" Logic
+One of the core engineering challenges solved in this project is the availability check. We implemented a relational model (`bookings` table) and an overlap algorithm:
 
-## How It Works
-
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+```sql
+-- Logic to detect conflicts
+SELECT * FROM bookings
+WHERE dress_id = target_dress
+AND (start_date <= requested_end AND end_date >= requested_start)
