@@ -1,6 +1,6 @@
 # 👗 Dress Rental Platform (SaaS MVP)
 
-**Developed by:** [Pascal Solutions TI](https://www.pascalsolutionsti.com)
+**Developed by:** [Christian Mendivil](https://www.pascalsolutionsti.com)
 **Status:** Production (v1.0-LTS)
 
 ## 📖 Overview
