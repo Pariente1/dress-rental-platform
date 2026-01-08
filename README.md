@@ -35,12 +35,12 @@ Unlike standard e-commerce sites, this platform handles the complexity of **temp
 ### The "Date-Blocking" Logic
 One of the core engineering challenges solved in this project is the availability check. We implemented a relational model (`bookings` table) and an overlap algorithm:
 
-```sql
+\`\`\`sql
 -- Logic to detect conflicts
 SELECT * FROM bookings
 WHERE dress_id = target_dress
 AND (start_date <= requested_end AND end_date >= requested_start)
-```
+\`\`\`
 
 Security
 RLS Policies: Database policies ensure that public users can strictly read available inventory, while only authenticated admins can modify data.
@@ -52,4 +52,3 @@ Protected Routes: Middleware implementation to guard /admin panels.
 <img width="1087" height="734" alt="{C47416B5-F26D-4901-871C-B99958EFD80D}" src="https://github.com/user-attachments/assets/2ba0d513-704a-4d21-b9c5-48dfe2cea7c6" />
 
 © 2026 Pascal Solutions TI · Soporte: ventas@pascalsolutionsti.com · +52 667 2016415
-
