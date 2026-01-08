@@ -1,0 +1,43 @@
+# Git
+.git
+.gitignore
+
+# Dependencies
+node_modules
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# Production
+.next
+out
+dist
+build
+
+# Testing
+.jest
+.coverage
+cypress
+
+# Development
+.env.local
+.env.*.local
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+README.md
+LICENSE
+.npmrc
+
+# CI/CD
+.github
+.gitlab-ci.yml
+.travis.yml
