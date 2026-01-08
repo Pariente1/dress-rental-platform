@@ -32,7 +32,6 @@ export function CatalogContent({ editMode }: CatalogContentProps) {
       let query = supabase.from("dresses").select("*").eq("available", true)
 
       const search = searchParams.get("search")
-      const category = searchParams.get("category")
       const color = searchParams.get("color")
       const size = searchParams.get("size")
       const minPrice = searchParams.get("minPrice")
@@ -41,10 +40,6 @@ export function CatalogContent({ editMode }: CatalogContentProps) {
 
       if (search && search.trim() !== "") {
         query = query.or(`name.ilike.%${search}%,description.ilike.%${search}%`)
-      }
-
-      if (category && !["todos", "all", "todas", ""].includes(category.toLowerCase())) {
-        query = query.ilike("category", `%${category}%`)
       }
 
       if (color && !["todos", "all", "todas", ""].includes(color.toLowerCase())) {

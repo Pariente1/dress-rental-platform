@@ -27,12 +27,6 @@ interface DressSize {
   display_order: number
 }
 
-interface DressCategory {
-  id: string
-  name: string
-  display_name: string
-}
-
 export function CatalogFiltersHome() {
   const router = useRouter()
   const [size, setSize] = useState<string>("")
@@ -41,7 +35,6 @@ export function CatalogFiltersHome() {
   const [maxPriceDB, setMaxPriceDB] = useState<number>(1000)
   const [minPrice, setMinPrice] = useState<number>(0)
   const [maxPrice, setMaxPrice] = useState<number>(1000)
-  const [category, setCategory] = useState<string>("")
   const [availabilityModalOpen, setAvailabilityModalOpen] = useState(false)
   const [eventDate, setEventDate] = useState("")
   const [isChecking, setIsChecking] = useState(false)
@@ -52,7 +45,6 @@ export function CatalogFiltersHome() {
 
   const [colors, setColors] = useState<DressColor[]>([])
   const [sizes, setSizes] = useState<DressSize[]>([])
-  const [categories, setCategories] = useState<DressCategory[]>([])
   const [isLoadingOptions, setIsLoadingOptions] = useState(true)
 
   useEffect(() => {
@@ -83,7 +75,6 @@ export function CatalogFiltersHome() {
           setColors(sortedColors)
         }
         if (optionsRes.sizes) setSizes(optionsRes.sizes)
-        if (optionsRes.categories) setCategories(optionsRes.categories)
       } catch (error) {
         console.error("[v0] Error fetching data:", error)
       } finally {
@@ -154,7 +145,6 @@ export function CatalogFiltersHome() {
     if (selectedColor && selectedColor !== "") params.set("color", selectedColor)
     if (minPrice > minPriceDB) params.set("minPrice", minPrice.toString())
     if (maxPrice < maxPriceDB) params.set("maxPrice", maxPrice.toString())
-    if (category && category !== "all" && category !== "") params.set("category", category)
 
     router.push(`/catalogo?${params.toString()}`)
   }
@@ -397,24 +387,6 @@ export function CatalogFiltersHome() {
               />
             </div>
           </div>
-        </div>
-
-        {/* Etiqueta */}
-        <div className="flex-shrink-0">
-          <Label className="mb-2 block text-xs font-medium text-gray-600">Etiqueta</Label>
-          <Select value={category} onValueChange={setCategory}>
-            <SelectTrigger className="w-36 rounded-full border-gray-300 bg-gray-50 hover:bg-gray-100">
-              <SelectValue placeholder="Todas" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Todas</SelectItem>
-              {categories.map((cat) => (
-                <SelectItem key={cat.id} value={cat.name}>
-                  {cat.display_name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
         </div>
       </div>
 

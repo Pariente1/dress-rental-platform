@@ -24,18 +24,11 @@ interface SizeOption {
   display_order: number
 }
 
-interface CategoryOption {
-  id: string
-  name: string
-  display_name: string
-}
-
 export function CatalogFilters() {
   const router = useRouter()
   const searchParams = useSearchParams()
 
   const [searchQuery, setSearchQuery] = useState(searchParams.get("search") || "")
-  const [category, setCategory] = useState(searchParams.get("category") || "todos")
   const [color, setColor] = useState(searchParams.get("color") || "todos")
   const [size, setSize] = useState(searchParams.get("size") || "todos")
   const [minPrice, setMinPrice] = useState(searchParams.get("minPrice") || "")
@@ -43,7 +36,6 @@ export function CatalogFilters() {
 
   const [colors, setColors] = useState<ColorOption[]>([])
   const [sizes, setSizes] = useState<SizeOption[]>([])
-  const [categories, setCategories] = useState<CategoryOption[]>([])
   const [isLoadingOptions, setIsLoadingOptions] = useState(true)
   const [isColorPopoverOpen, setIsColorPopoverOpen] = useState(false)
 
@@ -56,7 +48,6 @@ export function CatalogFilters() {
           setColors(sortColorsByPreference(data.colors))
         }
         if (data.sizes) setSizes(data.sizes)
-        if (data.categories) setCategories(data.categories)
       } catch (error) {
         console.error("[v0] Error loading filter options:", error)
       } finally {
@@ -70,7 +61,6 @@ export function CatalogFilters() {
     const params = new URLSearchParams()
 
     if (searchQuery) params.set("search", searchQuery)
-    if (category && category !== "todos") params.set("category", category)
     if (color && color !== "todos") params.set("color", color)
     if (size && size !== "todos") params.set("size", size)
     if (minPrice) params.set("minPrice", minPrice)
@@ -81,7 +71,6 @@ export function CatalogFilters() {
 
   const clearFilters = () => {
     setSearchQuery("")
-    setCategory("todos")
     setColor("todos")
     setSize("todos")
     setMinPrice("")
@@ -90,12 +79,7 @@ export function CatalogFilters() {
   }
 
   const hasActiveFilters =
-    searchQuery ||
-    (category && category !== "todos") ||
-    (color && color !== "todos") ||
-    (size && size !== "todos") ||
-    minPrice ||
-    maxPrice
+    searchQuery || (color && color !== "todos") || (size && size !== "todos") || minPrice || maxPrice
 
   const ColorDropdown = ({ isMobile }: { isMobile: boolean }) => {
     const selectedColorName = colors.find((c) => c.name === color)?.display_name || "Todos los colores"
@@ -217,23 +201,6 @@ export function CatalogFilters() {
             </SheetHeader>
             <div className="mt-6 space-y-4">
               <div className="space-y-2">
-                <Label>Categoría</Label>
-                <Select value={category} onValueChange={setCategory}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="todos">Todas las categorías</SelectItem>
-                    {categories.map((cat) => (
-                      <SelectItem key={cat.id} value={cat.name}>
-                        {cat.display_name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
                 <Label>Color</Label>
                 <ColorDropdown isMobile={true} />
               </div>
@@ -292,20 +259,6 @@ export function CatalogFilters() {
 
       {/* Desktop Filters */}
       <div className="hidden gap-4 lg:flex">
-        <Select value={category} onValueChange={setCategory}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Categoría" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="todos">Todas las categorías</SelectItem>
-            {categories.map((cat) => (
-              <SelectItem key={cat.id} value={cat.name}>
-                {cat.display_name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
         <ColorDropdown isMobile={false} />
 
         <Select value={size} onValueChange={setSize}>

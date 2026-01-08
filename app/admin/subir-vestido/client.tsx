@@ -39,7 +39,7 @@ export default function SubirVestidoClient() {
   const [description, setDescription] = useState<string>("")
   const [size, setSize] = useState<string>("")
   const [price, setPrice] = useState<string>("")
-  const [category, setCategory] = useState<string>("")
+  const [category, setCategory] = useState<string>("Sin categoría")
   const [color, setColor] = useState<string>("")
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,7 +71,7 @@ export default function SubirVestidoClient() {
     setErrorMessage(null)
     setErrorDetails(null)
 
-    if (!imageFile || !name || !size || !price || !category || !color) {
+    if (!imageFile || !name || !size || !price || !color) {
       setErrorMessage("Por favor completa todos los campos incluyendo el color")
       return
     }
@@ -293,25 +293,6 @@ export default function SubirVestidoClient() {
                     step="0.01"
                   />
                   <p className="text-xs text-muted-foreground">Incluye 2 días antes y 1 día después de gracia</p>
-                </div>
-
-                {/* Etiqueta */}
-                <div className="space-y-2">
-                  <Label htmlFor="category">Etiqueta *</Label>
-                  <Select value={category} onValueChange={setCategory} required>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecciona una etiqueta" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Cóctel">Cóctel</SelectItem>
-                      <SelectItem value="Gala">Gala</SelectItem>
-                      <SelectItem value="Formal">Formal</SelectItem>
-                      <SelectItem value="Fiesta">Fiesta</SelectItem>
-                      <SelectItem value="Noche">Noche</SelectItem>
-                      <SelectItem value="Graduación">Graduación</SelectItem>
-                      <SelectItem value="Boda">Boda</SelectItem>
-                    </SelectContent>
-                  </Select>
                 </div>
 
                 <Button
