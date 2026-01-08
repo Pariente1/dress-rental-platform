@@ -40,3 +40,15 @@ One of the core engineering challenges solved in this project is the availabilit
 SELECT * FROM bookings
 WHERE dress_id = target_dress
 AND (start_date <= requested_end AND end_date >= requested_start)
+
+Security
+RLS Policies: Database policies ensure that public users can strictly read available inventory, while only authenticated admins can modify data.
+
+Protected Routes: Middleware implementation to guard /admin panels.
+
+📸 Screenshots
+
+<img width="1087" height="734" alt="{C47416B5-F26D-4901-871C-B99958EFD80D}" src="https://github.com/user-attachments/assets/2ba0d513-704a-4d21-b9c5-48dfe2cea7c6" />
+
+© 2026 Pascal Solutions TI · Soporte: ventas@pascalsolutionsti.com · +52 667 2016415
+
