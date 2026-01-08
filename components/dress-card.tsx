@@ -49,13 +49,11 @@ export function DressCard({ dress, editMode = false, onUpdate, onDelete }: Dress
   const [editedDescription, setEditedDescription] = useState(dress.description || "")
   const [editedPrice, setEditedPrice] = useState(dress.price_per_day.toString())
   const [editedSize, setEditedSize] = useState(dress.size)
-  const [editedCategory, setEditedCategory] = useState(dress.category)
   const [editedColor, setEditedColor] = useState(dress.color || "")
   const [newImage, setNewImage] = useState<File | null>(null)
   const [previewImage, setPreviewImage] = useState<string | null>(null)
 
   const [sizeOptions, setSizeOptions] = useState<string[]>([])
-  const [categoryOptions, setCategoryOptions] = useState<string[]>([])
   const [isLoadingOptions, setIsLoadingOptions] = useState(true)
 
   useEffect(() => {
@@ -66,14 +64,9 @@ export function DressCard({ dress, editMode = false, onUpdate, onDelete }: Dress
         if (data.sizes) {
           setSizeOptions(data.sizes.map((s: { name: string }) => s.name))
         }
-        if (data.categories) {
-          setCategoryOptions(data.categories.map((c: { name: string }) => c.name))
-        }
       } catch (error) {
         console.error("[v0] Error loading options:", error)
-        // Fallback to defaults if API fails
         setSizeOptions(["XS", "S", "M", "L", "XL", "XXL"])
-        setCategoryOptions(["Cóctel", "Gala", "Formal", "Fiesta", "Noche", "Graduación", "Boda"])
       } finally {
         setIsLoadingOptions(false)
       }
@@ -122,18 +115,6 @@ export function DressCard({ dress, editMode = false, onUpdate, onDelete }: Dress
       }
     } else {
       setSizeOptions(newOptions)
-    }
-  }
-
-  const handleCategoryOptionsChange = async (newOptions: string[]) => {
-    const addedOption = newOptions.find((opt) => !categoryOptions.includes(opt))
-    if (addedOption) {
-      const success = await handleAddOption("category", addedOption)
-      if (success) {
-        setCategoryOptions(newOptions)
-      }
-    } else {
-      setCategoryOptions(newOptions)
     }
   }
 
@@ -195,7 +176,6 @@ export function DressCard({ dress, editMode = false, onUpdate, onDelete }: Dress
           description: editedDescription,
           price_per_day: Number(editedPrice),
           size: editedSize,
-          category: editedCategory,
           color: editedColor,
           image_url: imageUrl,
         }),
@@ -308,39 +288,21 @@ export function DressCard({ dress, editMode = false, onUpdate, onDelete }: Dress
             )}
 
             {editMode ? (
-              <div className="flex gap-2">
-                <CreatableSelect
-                  value={editedCategory}
-                  onChange={(val) => setEditedCategory(val as string)}
-                  options={categoryOptions}
-                  onOptionsChange={handleCategoryOptionsChange}
-                  placeholder="Categoría"
-                  multiple={false}
-                  allowCreate={true}
-                  allowDelete={false}
-                  className="flex-1 text-xs"
-                />
-                <CreatableSelect
-                  value={editedSize}
-                  onChange={(val) => setEditedSize(val as string)}
-                  options={sizeOptions}
-                  onOptionsChange={handleSizeOptionsChange}
-                  placeholder="Talla"
-                  multiple={false}
-                  allowCreate={true}
-                  allowDelete={false}
-                  className="w-24 text-xs"
-                />
-              </div>
+              <CreatableSelect
+                value={editedSize}
+                onChange={(val) => setEditedSize(val as string)}
+                options={sizeOptions}
+                onOptionsChange={handleSizeOptionsChange}
+                placeholder="Talla"
+                multiple={false}
+                allowCreate={true}
+                allowDelete={false}
+                className="w-24 text-xs"
+              />
             ) : (
-              <div className="flex items-center gap-2">
-                <Badge variant="secondary" className="text-xs">
-                  {dress.category}
-                </Badge>
-                <Badge variant="outline" className="text-xs">
-                  {dress.size}
-                </Badge>
-              </div>
+              <Badge variant="outline" className="text-xs">
+                {dress.size}
+              </Badge>
             )}
 
             {editMode ? (
@@ -355,7 +317,6 @@ export function DressCard({ dress, editMode = false, onUpdate, onDelete }: Dress
                 placeholder="Descripción (máx. 100 caracteres)"
               />
             ) : (
-              /* Added responsive font size classes to description - text-xs on mobile, text-sm on md and above, lg:text-xs to prevent text cutoff in 1024-1531px range */
               <p className="text-xs md:text-sm lg:text-xs text-muted-foreground line-clamp-2 min-h-[3rem] overflow-hidden">
                 {dress.description}
               </p>
