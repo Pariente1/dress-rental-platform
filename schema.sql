@@ -107,6 +107,27 @@ CREATE POLICY "Auth Insert Reservations" ON public.reservations FOR INSERT TO au
 -- Add other write policies as needed (Update/Delete for Admins only)
 
 -- ==========================================
+-- 2.3 ADMIN MANAGEMENT POLICIES (Enable Inline Edit)
+-- ==========================================
+
+-- Permitir a usuarios logueados (Admins) EDITAR, CREAR y BORRAR Vestidos
+CREATE POLICY "Admin Manage Dresses" ON public.dresses
+  FOR ALL -- Abarca INSERT, UPDATE, DELETE
+  TO authenticated
+  USING (true)
+  WITH CHECK (true);
+
+-- Permitir lo mismo para Categorías, Tallas y Colores (Por si quieres editar catálogos)
+CREATE POLICY "Admin Manage Categories" ON public.dress_categories
+  FOR ALL TO authenticated USING (true) WITH CHECK (true);
+
+CREATE POLICY "Admin Manage Sizes" ON public.dress_sizes
+  FOR ALL TO authenticated USING (true) WITH CHECK (true);
+
+CREATE POLICY "Admin Manage Colors" ON public.dress_colors
+  FOR ALL TO authenticated USING (true) WITH CHECK (true);
+
+-- ==========================================
 -- 3. SEED DATA (Initial Content)
 -- ==========================================
 
