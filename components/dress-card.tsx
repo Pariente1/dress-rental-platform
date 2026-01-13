@@ -24,20 +24,25 @@ interface DressCardProps {
   onDelete?: (dressId: string) => void
 }
 
-const getRandomGoldenGradient = () => {
-  const gradients = [
-    "golden-gradient-1",
-    "golden-gradient-2",
-    "golden-gradient-3",
-    "golden-gradient-4",
-    "golden-gradient-5",
-  ]
-  return gradients[Math.floor(Math.random() * gradients.length)]
+const GOLDEN_GRADIENTS = [
+  "golden-gradient-1",
+  "golden-gradient-2",
+  "golden-gradient-3",
+  "golden-gradient-4",
+  "golden-gradient-5",
+]
+
+const getGradientForDress = (dressId: string) => {
+  let hash = 0
+  for (let i = 0; i < dressId.length; i++) {
+    hash = dressId.charCodeAt(i) + ((hash << 5) - hash)
+  }
+  return GOLDEN_GRADIENTS[Math.abs(hash) % GOLDEN_GRADIENTS.length]
 }
 
 export function DressCard({ dress, editMode = false, onUpdate, onDelete }: DressCardProps) {
   const [modalOpen, setModalOpen] = useState(false)
-  const [gradientClass] = useState(getRandomGoldenGradient())
+  const gradientClass = getGradientForDress(dress.id)
   const [isSaving, setIsSaving] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const [imageHover, setImageHover] = useState(false)
